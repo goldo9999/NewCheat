@@ -27,7 +27,6 @@ local GoldoCheatLib = {
 	SaveCfg = false
 }
 
---Feather Icons https://github.com/evoincorp/lucideblox/tree/master/src/modules/util - Created by 7kayoh
 local Icons = {}
 
 local Success, Response = pcall(function()
@@ -455,7 +454,7 @@ function GoldoCheatLib:Init()
 				LoadCfg(readfile(GoldoCheatLib.Folder .. "/" .. game.GameId .. ".txt"))
 				GoldoCheatLib:MakeNotification({
 					Name = "Info",
-					Content = "Game ID:" .. game.GameId .. ".",
+					Content = "Game ID: " .. game.GameId .. ".",
 					Time = 5
 				})
 			end
@@ -1699,7 +1698,7 @@ function GoldoCheatLib:MakeWindow(WindowConfig)
 					Position = UDim2.new(0, 150, 0, 112),
 					Font = Enum.Font.GothamBold
 				}), "Text"),
-				AddThemeObject(SetProps(MakeElement("Label", "This part of the script is locked to Sirius Premium users. Purchase Premium in the Discord server (discord.gg/sirius)", 12), {
+				AddThemeObject(SetProps(MakeElement("Label", "Purchase Premium in the Discord server (https://discord.gg/bXdH97S3Ze)", 12), {
 					Size = UDim2.new(1, -200, 0, 14),
 					Position = UDim2.new(0, 150, 0, 138),
 					TextWrapped = true,
