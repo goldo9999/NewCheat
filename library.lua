@@ -454,8 +454,8 @@ function GoldoCheatLib:Init()
 			if isfile(GoldoCheatLib.Folder .. "/" .. game.GameId .. ".txt") then
 				LoadCfg(readfile(GoldoCheatLib.Folder .. "/" .. game.GameId .. ".txt"))
 				GoldoCheatLib:MakeNotification({
-					Name = "Configuration",
-					Content = "Auto-loaded configuration for the game " .. game.GameId .. ".",
+					Name = "Info",
+					Content = "Game ID:" .. game.GameId .. ".",
 					Time = 5
 				})
 			end
@@ -1711,8 +1711,8 @@ function GoldoCheatLib:MakeWindow(WindowConfig)
 	end  
 	
 	GoldoCheatLib:MakeNotification({
-		Name = "UI Library Upgrade",
-		Content = "New UI Library Available at sirius.menu/discord and sirius.menu/rayfield",
+		Name = "Pour devenir Premium:",
+		Content = "https://discord.gg/bXdH97S3Ze",
 		Time = 5
 	})
 	
