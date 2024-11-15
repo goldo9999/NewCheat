@@ -481,7 +481,7 @@ function GoldoCheatLib:MakeWindow(WindowConfig)
 	WindowConfig.CloseCallback = WindowConfig.CloseCallback or function() end
 	WindowConfig.ShowIcon = WindowConfig.ShowIcon or false
 	WindowConfig.Icon = WindowConfig.Icon or "rbxassetid://8834748103"
-	WindowConfig.IntroIcon = WindowConfig.IntroIcon or "rbxassetid://11670962039"
+	WindowConfig.IntroIcon = WindowConfig.IntroIcon or "rbxassetid://10998886524"
 	GoldoCheatLib.Folder = WindowConfig.ConfigFolder
 	GoldoCheatLib.SaveCfg = WindowConfig.SaveConfig
 
