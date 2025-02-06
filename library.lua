@@ -7,7 +7,7 @@ local LocalPlayer = game:GetService("Players").LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
 local HttpService = game:GetService("HttpService")
 
-local GoldoCheatLib = {
+local AlcorCheatLib = {
 	Elements = {},
 	ThemeObjects = {},
 	Connections = {},
@@ -45,53 +45,53 @@ local function GetIcon(IconName)
 	end
 end   
 
-local GoldoCheat = Instance.new("ScreenGui")
-GoldoCheat.Name = "GoldoCheat"
+local AlcorCheat = Instance.new("ScreenGui")
+AlcorCheat.Name = "AlcorCheat"
 if syn then
-	syn.protect_gui(GoldoCheat)
-	GoldoCheat.Parent = game.CoreGui
+	syn.protect_gui(AlcorCheat)
+	AlcorCheat.Parent = game.CoreGui
 else
-	GoldoCheat.Parent = gethui() or game.CoreGui
+	AlcorCheat.Parent = gethui() or game.CoreGui
 end
 
 if gethui then
 	for _, Interface in ipairs(gethui():GetChildren()) do
-		if Interface.Name == GoldoCheat.Name and Interface ~= GoldoCheat then
+		if Interface.Name == AlcorCheat.Name and Interface ~= AlcorCheat then
 			Interface:Destroy()
 		end
 	end
 else
 	for _, Interface in ipairs(game.CoreGui:GetChildren()) do
-		if Interface.Name == GoldoCheat.Name and Interface ~= GoldoCheat then
+		if Interface.Name == AlcorCheat.Name and Interface ~= AlcorCheat then
 			Interface:Destroy()
 		end
 	end
 end
 
-function GoldoCheatLib:IsRunning()
+function AlcorCheatLib:IsRunning()
 	if gethui then
-		return GoldoCheat.Parent == gethui()
+		return AlcorCheat.Parent == gethui()
 	else
-		return GoldoCheat.Parent == game:GetService("CoreGui")
+		return AlcorCheat.Parent == game:GetService("CoreGui")
 	end
 
 end
 
 local function AddConnection(Signal, Function)
-	if (not GoldoCheatLib:IsRunning()) then
+	if (not AlcorCheatLib:IsRunning()) then
 		return
 	end
 	local SignalConnect = Signal:Connect(Function)
-	table.insert(GoldoCheatLib.Connections, SignalConnect)
+	table.insert(AlcorCheatLib.Connections, SignalConnect)
 	return SignalConnect
 end
 
 task.spawn(function()
-	while (GoldoCheatLib:IsRunning()) do
+	while (AlcorCheatLib:IsRunning()) do
 		wait()
 	end
 
-	for _, Connection in next, GoldoCheatLib.Connections do
+	for _, Connection in next, AlcorCheatLib.Connections do
 		Connection:Disconnect()
 	end
 end)
@@ -138,13 +138,13 @@ local function Create(Name, Properties, Children)
 end
 
 local function CreateElement(ElementName, ElementFunction)
-	GoldoCheatLib.Elements[ElementName] = function(...)
+	AlcorCheatLib.Elements[ElementName] = function(...)
 		return ElementFunction(...)
 	end
 end
 
 local function MakeElement(ElementName, ...)
-	local NewElement = GoldoCheatLib.Elements[ElementName](...)
+	local NewElement = AlcorCheatLib.Elements[ElementName](...)
 	return NewElement
 end
 
@@ -187,18 +187,18 @@ local function ReturnProperty(Object)
 end
 
 local function AddThemeObject(Object, Type)
-	if not GoldoCheatLib.ThemeObjects[Type] then
-		GoldoCheatLib.ThemeObjects[Type] = {}
+	if not AlcorCheatLib.ThemeObjects[Type] then
+		AlcorCheatLib.ThemeObjects[Type] = {}
 	end    
-	table.insert(GoldoCheatLib.ThemeObjects[Type], Object)
-	Object[ReturnProperty(Object)] = GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme][Type]
+	table.insert(AlcorCheatLib.ThemeObjects[Type], Object)
+	Object[ReturnProperty(Object)] = AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme][Type]
 	return Object
 end    
 
 local function SetTheme()
-	for Name, Type in pairs(GoldoCheatLib.ThemeObjects) do
+	for Name, Type in pairs(AlcorCheatLib.ThemeObjects) do
 		for _, Object in pairs(Type) do
-			Object[ReturnProperty(Object)] = GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme][Name]
+			Object[ReturnProperty(Object)] = AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme][Name]
 		end    
 	end    
 end
@@ -214,12 +214,12 @@ end
 local function LoadCfg(Config)
 	local Data = HttpService:JSONDecode(Config)
 	table.foreach(Data, function(a,b)
-		if GoldoCheatLib.Flags[a] then
+		if AlcorCheatLib.Flags[a] then
 			spawn(function() 
-				if GoldoCheatLib.Flags[a].Type == "Colorpicker" then
-					GoldoCheatLib.Flags[a]:Set(UnpackColor(b))
+				if AlcorCheatLib.Flags[a].Type == "Colorpicker" then
+					AlcorCheatLib.Flags[a]:Set(UnpackColor(b))
 				else
-					GoldoCheatLib.Flags[a]:Set(b)
+					AlcorCheatLib.Flags[a]:Set(b)
 				end    
 			end)
 		else
@@ -230,7 +230,7 @@ end
 
 local function SaveCfg(Name)
 	local Data = {}
-	for i,v in pairs(GoldoCheatLib.Flags) do
+	for i,v in pairs(AlcorCheatLib.Flags) do
 		if v.Save then
 			if v.Type == "Colorpicker" then
 				Data[i] = PackColor(v.Value)
@@ -239,7 +239,7 @@ local function SaveCfg(Name)
 			end
 		end	
 	end
-	writefile(GoldoCheatLib.Folder .. "/" .. Name .. ".txt", tostring(HttpService:JSONEncode(Data)))
+	writefile(AlcorCheatLib.Folder .. "/" .. Name .. ".txt", tostring(HttpService:JSONEncode(Data)))
 end
 
 local WhitelistedMouse = {Enum.UserInputType.MouseButton1, Enum.UserInputType.MouseButton2,Enum.UserInputType.MouseButton3}
@@ -383,10 +383,10 @@ local NotificationHolder = SetProps(SetChildren(MakeElement("TFrame"), {
 	Position = UDim2.new(1, -25, 1, -25),
 	Size = UDim2.new(0, 300, 1, -25),
 	AnchorPoint = Vector2.new(1, 1),
-	Parent = GoldoCheat
+	Parent = AlcorCheat
 })
 
-function GoldoCheatLib:MakeNotification(NotificationConfig)
+function AlcorCheatLib:MakeNotification(NotificationConfig)
 	spawn(function()
 		NotificationConfig.Name = NotificationConfig.Name or "Notification"
 		NotificationConfig.Content = NotificationConfig.Content or "Test"
@@ -447,12 +447,12 @@ function GoldoCheatLib:MakeNotification(NotificationConfig)
 	end)
 end    
 
-function GoldoCheatLib:Init()
-	if GoldoCheatLib.SaveCfg then	
+function AlcorCheatLib:Init()
+	if AlcorCheatLib.SaveCfg then	
 		pcall(function()
-			if isfile(GoldoCheatLib.Folder .. "/" .. game.GameId .. ".txt") then
-				LoadCfg(readfile(GoldoCheatLib.Folder .. "/" .. game.GameId .. ".txt"))
-				GoldoCheatLib:MakeNotification({
+			if isfile(AlcorCheatLib.Folder .. "/" .. game.GameId .. ".txt") then
+				LoadCfg(readfile(AlcorCheatLib.Folder .. "/" .. game.GameId .. ".txt"))
+				AlcorCheatLib:MakeNotification({
 					Name = "Info",
 					Content = "Game ID: " .. game.GameId .. ".",
 					Time = 5
@@ -462,14 +462,14 @@ function GoldoCheatLib:Init()
 	end	
 end	
 
-function GoldoCheatLib:MakeWindow(WindowConfig)
+function AlcorCheatLib:MakeWindow(WindowConfig)
 	local FirstTab = true
 	local Minimized = false
 	local Loaded = false
 	local UIHidden = false
 
 	WindowConfig = WindowConfig or {}
-	WindowConfig.Name = WindowConfig.Name or "GoldoCheat"
+	WindowConfig.Name = WindowConfig.Name or "AlcorCheat"
 	WindowConfig.ConfigFolder = WindowConfig.ConfigFolder or WindowConfig.Name
 	WindowConfig.SaveConfig = WindowConfig.SaveConfig or false
 	WindowConfig.HidePremium = WindowConfig.HidePremium or false
@@ -481,8 +481,8 @@ function GoldoCheatLib:MakeWindow(WindowConfig)
 	WindowConfig.ShowIcon = WindowConfig.ShowIcon or false
 	WindowConfig.Icon = WindowConfig.Icon or "rbxassetid://8834748103"
 	WindowConfig.IntroIcon = WindowConfig.IntroIcon or "rbxassetid://10998886524"
-	GoldoCheatLib.Folder = WindowConfig.ConfigFolder
-	GoldoCheatLib.SaveCfg = WindowConfig.SaveConfig
+	AlcorCheatLib.Folder = WindowConfig.ConfigFolder
+	AlcorCheatLib.SaveCfg = WindowConfig.SaveConfig
 
 	if WindowConfig.SaveConfig then
 		if not isfolder(WindowConfig.ConfigFolder) then
@@ -599,7 +599,7 @@ function GoldoCheatLib:MakeWindow(WindowConfig)
 	}), "Stroke")
 
 	local MainWindow = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 255, 255), 0, 10), {
-		Parent = GoldoCheat,
+		Parent = AlcorCheat,
 		Position = UDim2.new(0.5, -307, 0.5, -172),
 		Size = UDim2.new(0, 615, 0, 344),
 		ClipsDescendants = true
@@ -648,7 +648,7 @@ function GoldoCheatLib:MakeWindow(WindowConfig)
 	AddConnection(CloseBtn.MouseButton1Up, function()
 		MainWindow.Visible = false
 		UIHidden = true
-		GoldoCheatLib:MakeNotification({
+		AlcorCheatLib:MakeNotification({
 			Name = "Interface Hidden",
 			Content = "Tap RightShift to reopen the interface",
 			Time = 5
@@ -685,7 +685,7 @@ function GoldoCheatLib:MakeWindow(WindowConfig)
 	local function LoadSequence()
 		MainWindow.Visible = false
 		local LoadSequenceLogo = SetProps(MakeElement("Image", WindowConfig.IntroIcon), {
-			Parent = GoldoCheat,
+			Parent = AlcorCheat,
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			Position = UDim2.new(0.5, 0, 0.4, 0),
 			Size = UDim2.new(0, 28, 0, 28),
@@ -694,7 +694,7 @@ function GoldoCheatLib:MakeWindow(WindowConfig)
 		})
 
 		local LoadSequenceText = SetProps(MakeElement("Label", WindowConfig.IntroText, 14), {
-			Parent = GoldoCheat,
+			Parent = AlcorCheat,
 			Size = UDim2.new(1, 0, 1, 0),
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			Position = UDim2.new(0.5, 19, 0.5, 0),
@@ -884,22 +884,22 @@ function GoldoCheatLib:MakeWindow(WindowConfig)
 				}), "Second")
 
 				AddConnection(Click.MouseEnter, function()
-					TweenService:Create(ButtonFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.R * 255 + 3, GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.G * 255 + 3, GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.B * 255 + 3)}):Play()
+					TweenService:Create(ButtonFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.R * 255 + 3, AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.G * 255 + 3, AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.B * 255 + 3)}):Play()
 				end)
 
 				AddConnection(Click.MouseLeave, function()
-					TweenService:Create(ButtonFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second}):Play()
+					TweenService:Create(ButtonFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second}):Play()
 				end)
 
 				AddConnection(Click.MouseButton1Up, function()
-					TweenService:Create(ButtonFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.R * 255 + 3, GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.G * 255 + 3, GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.B * 255 + 3)}):Play()
+					TweenService:Create(ButtonFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.R * 255 + 3, AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.G * 255 + 3, AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.B * 255 + 3)}):Play()
 					spawn(function()
 						ButtonConfig.Callback()
 					end)
 				end)
 
 				AddConnection(Click.MouseButton1Down, function()
-					TweenService:Create(ButtonFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.R * 255 + 6, GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.G * 255 + 6, GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.B * 255 + 6)}):Play()
+					TweenService:Create(ButtonFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.R * 255 + 6, AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.G * 255 + 6, AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.B * 255 + 6)}):Play()
 				end)
 
 				function Button:Set(ButtonText)
@@ -959,8 +959,8 @@ function GoldoCheatLib:MakeWindow(WindowConfig)
 
 				function Toggle:Set(Value)
 					Toggle.Value = Value
-					TweenService:Create(ToggleBox, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Toggle.Value and ToggleConfig.Color or GoldoCheatLib.Themes.Default.Divider}):Play()
-					TweenService:Create(ToggleBox.Stroke, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Color = Toggle.Value and ToggleConfig.Color or GoldoCheatLib.Themes.Default.Stroke}):Play()
+					TweenService:Create(ToggleBox, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Toggle.Value and ToggleConfig.Color or AlcorCheatLib.Themes.Default.Divider}):Play()
+					TweenService:Create(ToggleBox.Stroke, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {Color = Toggle.Value and ToggleConfig.Color or AlcorCheatLib.Themes.Default.Stroke}):Play()
 					TweenService:Create(ToggleBox.Ico, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {ImageTransparency = Toggle.Value and 0 or 1, Size = Toggle.Value and UDim2.new(0, 20, 0, 20) or UDim2.new(0, 8, 0, 8)}):Play()
 					ToggleConfig.Callback(Toggle.Value)
 				end    
@@ -968,25 +968,25 @@ function GoldoCheatLib:MakeWindow(WindowConfig)
 				Toggle:Set(Toggle.Value)
 
 				AddConnection(Click.MouseEnter, function()
-					TweenService:Create(ToggleFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.R * 255 + 3, GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.G * 255 + 3, GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.B * 255 + 3)}):Play()
+					TweenService:Create(ToggleFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.R * 255 + 3, AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.G * 255 + 3, AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.B * 255 + 3)}):Play()
 				end)
 
 				AddConnection(Click.MouseLeave, function()
-					TweenService:Create(ToggleFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second}):Play()
+					TweenService:Create(ToggleFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second}):Play()
 				end)
 
 				AddConnection(Click.MouseButton1Up, function()
-					TweenService:Create(ToggleFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.R * 255 + 3, GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.G * 255 + 3, GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.B * 255 + 3)}):Play()
+					TweenService:Create(ToggleFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.R * 255 + 3, AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.G * 255 + 3, AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.B * 255 + 3)}):Play()
 					SaveCfg(game.GameId)
 					Toggle:Set(not Toggle.Value)
 				end)
 
 				AddConnection(Click.MouseButton1Down, function()
-					TweenService:Create(ToggleFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.R * 255 + 6, GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.G * 255 + 6, GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.B * 255 + 6)}):Play()
+					TweenService:Create(ToggleFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.R * 255 + 6, AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.G * 255 + 6, AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.B * 255 + 6)}):Play()
 				end)
 
 				if ToggleConfig.Flag then
-					GoldoCheatLib.Flags[ToggleConfig.Flag] = Toggle
+					AlcorCheatLib.Flags[ToggleConfig.Flag] = Toggle
 				end	
 				return Toggle
 			end  
@@ -1081,7 +1081,7 @@ function GoldoCheatLib:MakeWindow(WindowConfig)
 
 				Slider:Set(Slider.Value)
 				if SliderConfig.Flag then				
-					GoldoCheatLib.Flags[SliderConfig.Flag] = Slider
+					AlcorCheatLib.Flags[SliderConfig.Flag] = Slider
 				end
 				return Slider
 			end  
@@ -1236,7 +1236,7 @@ function GoldoCheatLib:MakeWindow(WindowConfig)
 				Dropdown:Refresh(Dropdown.Options, false)
 				Dropdown:Set(Dropdown.Value)
 				if DropdownConfig.Flag then				
-					GoldoCheatLib.Flags[DropdownConfig.Flag] = Dropdown
+					AlcorCheatLib.Flags[DropdownConfig.Flag] = Dropdown
 				end
 				return Dropdown
 			end
@@ -1334,19 +1334,19 @@ function GoldoCheatLib:MakeWindow(WindowConfig)
 				end)
 
 				AddConnection(Click.MouseEnter, function()
-					TweenService:Create(BindFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.R * 255 + 3, GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.G * 255 + 3, GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.B * 255 + 3)}):Play()
+					TweenService:Create(BindFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.R * 255 + 3, AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.G * 255 + 3, AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.B * 255 + 3)}):Play()
 				end)
 
 				AddConnection(Click.MouseLeave, function()
-					TweenService:Create(BindFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second}):Play()
+					TweenService:Create(BindFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second}):Play()
 				end)
 
 				AddConnection(Click.MouseButton1Up, function()
-					TweenService:Create(BindFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.R * 255 + 3, GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.G * 255 + 3, GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.B * 255 + 3)}):Play()
+					TweenService:Create(BindFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.R * 255 + 3, AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.G * 255 + 3, AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.B * 255 + 3)}):Play()
 				end)
 
 				AddConnection(Click.MouseButton1Down, function()
-					TweenService:Create(BindFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.R * 255 + 6, GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.G * 255 + 6, GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.B * 255 + 6)}):Play()
+					TweenService:Create(BindFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.R * 255 + 6, AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.G * 255 + 6, AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.B * 255 + 6)}):Play()
 				end)
 
 				function Bind:Set(Key)
@@ -1358,7 +1358,7 @@ function GoldoCheatLib:MakeWindow(WindowConfig)
 
 				Bind:Set(BindConfig.Default)
 				if BindConfig.Flag then				
-					GoldoCheatLib.Flags[BindConfig.Flag] = Bind
+					AlcorCheatLib.Flags[BindConfig.Flag] = Bind
 				end
 				return Bind
 			end  
@@ -1425,20 +1425,20 @@ function GoldoCheatLib:MakeWindow(WindowConfig)
 				TextboxActual.Text = TextboxConfig.Default
 
 				AddConnection(Click.MouseEnter, function()
-					TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.R * 255 + 3, GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.G * 255 + 3, GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.B * 255 + 3)}):Play()
+					TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.R * 255 + 3, AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.G * 255 + 3, AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.B * 255 + 3)}):Play()
 				end)
 
 				AddConnection(Click.MouseLeave, function()
-					TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second}):Play()
+					TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second}):Play()
 				end)
 
 				AddConnection(Click.MouseButton1Up, function()
-					TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.R * 255 + 3, GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.G * 255 + 3, GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.B * 255 + 3)}):Play()
+					TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.R * 255 + 3, AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.G * 255 + 3, AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.B * 255 + 3)}):Play()
 					TextboxActual:CaptureFocus()
 				end)
 
 				AddConnection(Click.MouseButton1Down, function()
-					TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.R * 255 + 6, GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.G * 255 + 6, GoldoCheatLib.Themes[GoldoCheatLib.SelectedTheme].Second.B * 255 + 6)}):Play()
+					TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.R * 255 + 6, AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.G * 255 + 6, AlcorCheatLib.Themes[AlcorCheatLib.SelectedTheme].Second.B * 255 + 6)}):Play()
 				end)
 			end 
 			function ElementFunction:AddColorpicker(ColorpickerConfig)
@@ -1622,7 +1622,7 @@ function GoldoCheatLib:MakeWindow(WindowConfig)
 
 				Colorpicker:Set(Colorpicker.Value)
 				if ColorpickerConfig.Flag then				
-					GoldoCheatLib.Flags[ColorpickerConfig.Flag] = Colorpicker
+					AlcorCheatLib.Flags[ColorpickerConfig.Flag] = Colorpicker
 				end
 				return Colorpicker
 			end  
@@ -1709,7 +1709,7 @@ function GoldoCheatLib:MakeWindow(WindowConfig)
 		return ElementFunction   
 	end  
 	
-	GoldoCheatLib:MakeNotification({
+	AlcorCheatLib:MakeNotification({
 		Name = "Pour devenir Premium:",
 		Content = "https://discord.gg/bXdH97S3Ze",
 		Time = 5
@@ -1720,8 +1720,8 @@ function GoldoCheatLib:MakeWindow(WindowConfig)
 	return TabFunction
 end   
 
-function GoldoCheatLib:Destroy()
-	GoldoCheat:Destroy()
+function AlcorCheatLib:Destroy()
+	AlcorCheat:Destroy()
 end
 
-return GoldoCheatLib
+return AlcorCheatLib
