@@ -34,7 +34,7 @@ local Success, Response = pcall(function()
 end)
 
 if not Success then
-	warn("\nGoldo Alcor Cheat - Failed to load Feather Icons. Error code: " .. Response .. "\n")
+	warn("\n Alcor Cheat - Failed to load Feather Icons. Error code: " .. Response .. "\n")
 end	
 
 local function GetIcon(IconName)
@@ -223,7 +223,7 @@ local function LoadCfg(Config)
 				end    
 			end)
 		else
-			warn("Goldo Cheat Config Loader - Could not find ", a ,b)
+			warn("Alcor Cheat Config Loader - Could not find ", a ,b)
 		end
 	end)
 end
@@ -476,7 +476,7 @@ function AlcorCheatLib:MakeWindow(WindowConfig)
 	if WindowConfig.IntroEnabled == nil then
 		WindowConfig.IntroEnabled = true
 	end
-	WindowConfig.IntroText = WindowConfig.IntroText or "Goldo Cheat"
+	WindowConfig.IntroText = WindowConfig.IntroText or "Alcor Cheat"
 	WindowConfig.CloseCallback = WindowConfig.CloseCallback or function() end
 	WindowConfig.ShowIcon = WindowConfig.ShowIcon or false
 	WindowConfig.Icon = WindowConfig.Icon or "rbxassetid://8834748103"
