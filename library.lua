@@ -34,7 +34,7 @@ local Success, Response = pcall(function()
 end)
 
 if not Success then
-	warn("\nGoldo CheatLibrary - Failed to load Feather Icons. Error code: " .. Response .. "\n")
+	warn("\nGoldo Alcor Cheat - Failed to load Feather Icons. Error code: " .. Response .. "\n")
 end	
 
 local function GetIcon(IconName)
